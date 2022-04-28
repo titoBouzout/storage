@@ -1,5 +1,5 @@
 {
-	"name": "storage",
+	"name": "@titodp/storage",
 	"version": "3.1.11",
 	"description": "A simple class to automate storage.",
 	"main": "index.js",
@@ -7,9 +7,7 @@
 		"type": "git",
 		"url": "git+https://github.com/titoBouzout/storage.git"
 	},
-	"keywords": [
-		"storage"
-	],
+	"keywords": ["storage"],
 	"author": "Tito Bouzout",
 	"license": "GPL",
 	"bugs": {
