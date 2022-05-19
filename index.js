@@ -29,35 +29,34 @@ try {
 	}
 }
 
+import writeEffect from '@titodp/write-effect'
+
 let storage = new Proxy(
 	{
 		on(obj, key) {
-			key = key !== undefined ? key + '.' : ''
+			key = key !== undefined ? key : ''
 
 			let defaultValues = JSON.parse(JSON.stringify(obj))
-			for (var id in obj) {
-				let value = storage[key + id]
-				if (value !== null) {
+			let savedValues = JSON.parse(storage[key]) || {}
+			for (let id in obj) {
+				let value = savedValues[id]
+				if (value !== null && value !== undefined) {
 					obj[id] = value
 				}
 			}
-			return new Proxy(obj, {
-				get(target, prop, receiver) {
-					if (prop === 'reset') {
-						return function () {
-							for (var id in defaultValues) {
-								delete storage[key + id]
-								target[id] = defaultValues[id]
-							}
-						}
-					}
-					return Reflect.get(target, prop, receiver)
-				},
-				set(target, prop, value) {
-					storage[key + prop] = value
-					return Reflect.set(target, prop, value)
-				},
+			let timeout = false
+			let proxied = writeEffect(obj, () => {
+				clearTimeout(timeout)
+				timeout = setTimeout(() => {
+					storage[key] = JSON.stringify(obj)
+				}, 100)
 			})
+			proxied.reset = function () {
+				for (let id in defaultValues) {
+					proxied[id] = defaultValues[id]
+				}
+			}
+			return proxied
 		},
 	},
 	{

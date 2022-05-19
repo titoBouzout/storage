@@ -28,5 +28,8 @@
 		"arrowParens": "avoid",
 		"quoteProps": "preserve",
 		"proseWrap": "preserve"
+	},
+	"dependencies": {
+		"@titodp/write-effect": "^0.1.5"
 	}
 }
